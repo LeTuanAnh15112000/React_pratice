@@ -9,3 +9,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.add-new {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-new span {
+  margin-right: 20px;
+}
