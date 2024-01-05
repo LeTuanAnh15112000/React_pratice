@@ -8,7 +8,7 @@ function ModalAddUser(props) {
   const [job, setJob] = useState('');
 
   const handleSaveUser = () => {
-    console.log('>>> check state: ', 'name = ', name, 'job =', job);
+    console.log('> > > check state: ', 'name = ', name, 'job =', job);
   };
   return (
     <>
