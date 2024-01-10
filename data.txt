@@ -1,0 +1,69 @@
+1. Users Collection:
+- Lưu thông tin về tất cả người dùng trong hệ thống.
+{
+  _id: ObjectId,
+  username: String,
+  password: String,
+  role: String, // admin, employee, customer
+  branchId: ObjectId, // Tham chiếu đến Branches Collection
+  // Other user-related fields
+}
+
+2. Products Collection:
+- Lưu thông tin về các sản phẩm trà sữa.
+{
+  _id: ObjectId,
+  name: String,
+  description: String,
+  price: Number,
+  branchId: ObjectId, // Tham chiếu đến Branches Collection
+  // Other product-related fields
+}
+
+3. Orders Collection:
+- Lưu thông tin về đơn đặt hàng.
+{
+  _id: ObjectId,
+  userId: ObjectId, // Tham chiếu đến Users Collection
+  products: [
+    {
+      productId: ObjectId, // Tham chiếu đến Products Collection
+      quantity: Number,
+    }
+  ],
+  totalAmount: Number,
+  status: String, // pending, completed, canceled, etc.
+  branchId: ObjectId, // Tham chiếu đến Branches Collection
+  // Other order-related fields
+}
+
+4. EmployeeTasks Collection:
+- Lưu thông tin về công việc của nhân viên.
+{
+  _id: ObjectId,
+  userId: ObjectId, // Tham chiếu đến Users Collection
+  taskDescription: String,
+  deadline: Date,
+  status: String, // pending, completed, etc.
+  // Other task-related fields
+}
+
+5. CustomerReviews Collection:
+- Lưu đánh giá từ phía khách hàng.
+{
+  _id: ObjectId,
+  userId: ObjectId, // Tham chiếu đến Users Collection
+  productId: ObjectId, // Tham chiếu đến Products Collection
+  rating: Number, // 1-5
+  comment: String,
+  // Other review-related fields
+}
+
+6. Branches Collection:
+- Lưu thông tin về các chi nhánh của cửa hàng.
+{
+  _id: ObjectId,
+  name: String,
+  location: String,
+  // Other branch-related fields
+}
