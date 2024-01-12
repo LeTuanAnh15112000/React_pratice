@@ -12,4 +12,8 @@ function putUpdateUser(userId, name, job) {
   return axios.put(`/api/users/${userId}`, { name, job });
 }
 
-export { fetchAllUser, postCreateUser, putUpdateUser };
+function deleteUser(userId) {
+  return axios.delete(`/api/users/${userId}`);
+}
+
+export { fetchAllUser, postCreateUser, putUpdateUser, deleteUser };

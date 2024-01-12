@@ -4,6 +4,7 @@ import { fetchAllUser } from '../../services/UserServices';
 import ReactPaginate from 'react-paginate';
 import ModalAddUser from '../ModalAddUser';
 import ModalEditUser from '../ModalEditUser';
+import ModalDelete from '../ModalDelete';
 import _ from 'lodash';
 function DataTable() {
   const [listUsers, setListUsers] = useState([]);
@@ -12,9 +13,13 @@ function DataTable() {
   const [isShowModal, setIsShowModal] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
   const [dataEditUser, setDataEditUser] = useState({});
+  const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+  const [dataUserDelete, setDataUserDelete] = useState({});
+
   const handleClose = () => {
     setIsShowModal(false);
     setIsShowModalEdit(false);
+    setIsShowModalDelete(false);
   };
 
   const handleUpdateTable = (user) => {
@@ -62,6 +67,19 @@ function DataTable() {
   const handleEditUser = (user) => {
     setDataEditUser(() => user);
     setIsShowModalEdit(true);
+  };
+
+  const handleDeleteUser = (user) => {
+    setIsShowModalDelete(true);
+    setDataUserDelete(user);
+  };
+
+  const handleDeleteUserFromModal = (id) => {
+    let userDelete = listUsers.filter((user) => {
+      return user.id !== id;
+    });
+    let cloneListUser = _.cloneDeep(userDelete);
+    setListUsers(cloneListUser);
   };
 
   return (
@@ -112,7 +130,14 @@ function DataTable() {
                     >
                       Edit
                     </button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => {
+                        handleDeleteUser(data);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
@@ -144,6 +169,12 @@ function DataTable() {
         handleClose={handleClose}
         dataEditUser={dataEditUser}
         handleEditFromModal={handleEditFromModal}
+      />
+      <ModalDelete
+        show={isShowModalDelete}
+        handleClose={handleClose}
+        dataUserDelete={dataUserDelete}
+        handleDeleteUserFromModal={handleDeleteUserFromModal}
       />
     </Container>
   );
