@@ -6,6 +6,8 @@ import ModalAddUser from '../ModalAddUser';
 import ModalEditUser from '../ModalEditUser';
 import ModalDelete from '../ModalDelete';
 import _ from 'lodash';
+import './DataTable.scss';
+
 function DataTable() {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -15,6 +17,11 @@ function DataTable() {
   const [dataEditUser, setDataEditUser] = useState({});
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataUserDelete, setDataUserDelete] = useState({});
+
+  const [sortBy, setSortBy] = useState('asc');
+  const [sortField, setSortField] = useState('id');
+
+  const [searchUser, setSearchUser] = useState('');
 
   const handleClose = () => {
     setIsShowModal(false);
@@ -82,6 +89,19 @@ function DataTable() {
     setListUsers(cloneListUser);
   };
 
+  const handleSort = (sortBy, sortField) => {
+    setSortBy(sortBy);
+    setSortField(sortField);
+    let cloneListUser = _.cloneDeep(listUsers);
+    cloneListUser = _.orderBy(cloneListUser, [sortField], [sortBy]);
+    setListUsers(cloneListUser);
+  };
+
+  const handleSearch = (event) => {
+    setSearchUser(event.target.value);
+  };
+
+  console.log(searchUser);
   return (
     <Container>
       <div className="my-4 add-new">
@@ -97,12 +117,58 @@ function DataTable() {
           Add new user
         </button>
       </div>
+      <div className="col-3 mb-3">
+        <input
+          className="form-control"
+          value={searchUser}
+          onChange={(event) => {
+            handleSearch(event);
+          }}
+          placeholder="Search user by Email ..."
+        />
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>
+              <div className="sort-header">
+                ID
+                <span>
+                  <i
+                    className="fa-solid fa-arrow-down"
+                    onClick={() => {
+                      handleSort('desc', 'id');
+                    }}
+                  ></i>
+                  <i
+                    className="fa-solid fa-arrow-up"
+                    onClick={() => {
+                      handleSort('asc', 'id');
+                    }}
+                  ></i>
+                </span>
+              </div>
+            </th>
             <th>Email</th>
-            <th>First Name</th>
+            <th>
+              <div className="sort-header">
+                First Name
+                <span>
+                  <i
+                    className="fa-solid fa-arrow-down"
+                    onClick={() => {
+                      handleSort('desc', 'first_name');
+                    }}
+                  ></i>
+                  <i
+                    className="fa-solid fa-arrow-up"
+                    onClick={() => {
+                      handleSort('asc', 'first_name');
+                    }}
+                  ></i>
+                </span>
+              </div>
+            </th>
             <th>Last Name</th>
             <th>Avata</th>
             <th>Action</th>

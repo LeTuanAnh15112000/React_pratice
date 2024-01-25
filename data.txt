@@ -16,6 +16,7 @@
   name: String,
   description: String,
   price: Number,
+  categories: [String], // Mảng các danh mục của sản phẩm ví dụ categories: ["Trà Sữa", "Matcha"],
   branchId: ObjectId, // Tham chiếu đến Branches Collection
   // Other product-related fields
 }
@@ -67,3 +68,71 @@
   location: String,
   // Other branch-related fields
 }
+
+
+tuananh47082
+1@Tuananh1511200
+=========================================
+
+
+db.users.insert({
+  username: "tuananh47082",
+  password: "1@Tuananh1511200",
+  role: "admin",
+  branchId: ObjectId("65af7870c1061331089ba51c"),
+});
+
+db.products.insert({
+  name: "Trà Sữa Matcha",
+  description: "Trà sữa vị Matcha ngon",
+  price: 4.99,
+  total: 50,
+  categories: ["Trà Sữa", "Matcha"],
+  branchId: ObjectId("65af7870c1061331089ba51c"), // Thay thế ObjectId() bằng ID thực tế từ bảng Branches Collection
+});
+
+db.orders.insert({
+  userId: ObjectId("65af6e05c1061331089ba50d"), // Thay thế ObjectId() bằng ID thực tế từ bảng Users Collection
+  products: [
+    {
+      productId: ObjectId("65af7870c1061331089ba51c"), // Thay thế ObjectId() bằng ID thực tế từ bảng Products Collection
+      quantity: 2,
+    }
+  ],
+  totalAmount: 9.98,
+  status: "pending",
+  branchId: ObjectId("65af7870c1061331089ba51c"), // Thay thế ObjectId() bằng ID thực tế từ bảng Branches Collection
+});
+
+db.employeeTasks.insert({
+  userId: ObjectId("65af6e05c1061331089ba50d"), // Thay thế ObjectId() bằng ID thực tế từ bảng Users Collection
+  taskDescription: "Complete project presentation",
+  deadline: ISODate("2024-12-31T23:59:59.999Z"),
+  status: "pending",
+});
+
+db.customerReviews.insert({
+  userId: ObjectId("65af6e05c1061331089ba50d"), // Thay thế ObjectId() bằng ID thực tế từ bảng Users Collection
+  productId: ObjectId("65af7870c1061331089ba512"), // Thay thế ObjectId() bằng ID thực tế từ bảng Products Collection
+  rating: 5,
+  comment: "Great product!",
+});
+
+db.branches.insert({
+  name: "Branch A",
+  location: "123 Main Street",
+});
+
+
+//Để thêm một trường thumbnail vào một document đã tồn tại trong collection 
+db.products.updateOne(
+  { _id: ObjectId("your_product_id") }, // Thay thế "your_product_id" bằng _id thực tế của sản phẩm
+  { $set: { thumbnail: "url_of_thumbnail" } }
+);
+
+
+//  xóa toàn bộ collection users
+db.users.drop()
+
+db.users.deleteOne({ _id: ObjectId("65af7870c1061331089ba510") })
+
