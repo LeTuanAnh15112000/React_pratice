@@ -116,7 +116,7 @@ function DataTable() {
           <b>List Users:</b>
         </span>
         <button
-          className="btn btn-success"
+          className="btn btn-success csc"
           onClick={() => {
             setIsShowModal(true);
           }}
