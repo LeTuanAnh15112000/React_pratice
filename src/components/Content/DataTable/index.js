@@ -7,7 +7,9 @@ import ModalEditUser from '../ModalEditUser';
 import ModalDelete from '../ModalDelete';
 import _, { debounce } from 'lodash';
 import './DataTable.scss';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVLink } from 'react-csv';
+import Papa from 'papaparse';
+import { toast } from 'react-toastify';
 
 function DataTable() {
   const [listUsers, setListUsers] = useState([]);
@@ -129,6 +131,46 @@ function DataTable() {
     }
   };
 
+  const handleImportCsv = (event) => {
+    if (event.target && event.target.files && event.target.files[0]) {
+      let file = event.target.files[0];
+      if (file.type !== 'text/csv') {
+        toast.error('Only accept csv file...');
+        return;
+      }
+      Papa.parse(file, {
+        // header: true,
+        complete: function (results) {
+          let rawCsv = results.data;
+          if (rawCsv.length) {
+            if (rawCsv[0] && rawCsv[0].length === 4) {
+              if (rawCsv[0][1] !== 'Email' || rawCsv[0][2] !== 'First-name' || rawCsv[0][3] !== 'Last-name') {
+                toast.error('Wrong format header csv file');
+              } else {
+                let result = [];
+                rawCsv.map((item, index) => {
+                  if (index > 0 && item.length === 4) {
+                    let obj = {};
+                    obj.id = item[0];
+                    obj.email = item[1];
+                    obj.first_name = item[2];
+                    obj.last_name = item[3];
+                    result.push(obj);
+                  }
+                });
+                console.log(result);
+              }
+            } else {
+              toast.error('Wrong format csv file');
+            }
+          } else {
+            toast.error('Not found data on csv file !');
+          }
+        },
+      });
+    }
+  };
+
   return (
     <Container>
       <div className="my-4 add-new">
@@ -138,7 +180,14 @@ function DataTable() {
         <div className="group-btns">
           <label htmlFor="import" className="btn btn-warning">
             <i className="fa-solid fa-file-import"></i>Import
-            <input type="file" id="import" hidden></input>
+            <input
+              type="file"
+              id="import"
+              onChange={(event) => {
+                handleImportCsv(event);
+              }}
+              hidden
+            ></input>
           </label>
           <CSVLink
             filename={'my-file.csv'}
