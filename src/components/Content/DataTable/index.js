@@ -7,6 +7,7 @@ import ModalEditUser from '../ModalEditUser';
 import ModalDelete from '../ModalDelete';
 import _, { debounce } from 'lodash';
 import './DataTable.scss';
+import { CSVLink, CSVDownload } from 'react-csv';
 
 function DataTable() {
   const [listUsers, setListUsers] = useState([]);
@@ -22,6 +23,8 @@ function DataTable() {
   const [sortField, setSortField] = useState('id');
 
   const [searchUser, setSearchUser] = useState('');
+
+  const [dataExport, setDataExport] = useState([]);
 
   const handleClose = () => {
     setIsShowModal(false);
@@ -109,20 +112,52 @@ function DataTable() {
     }
   }, 500);
 
+  const getUsersExport = (event, done) => {
+    let result = [];
+    if (listUsers && listUsers.length > 0) {
+      result.push(['Id', 'Email', 'First-name', 'Last-name']);
+      listUsers.map((item, index) => {
+        let arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setDataExport(result);
+      done();
+    }
+  };
+
   return (
     <Container>
       <div className="my-4 add-new">
-        <span>
+        <span className="h_title">
           <b>List Users:</b>
         </span>
-        <button
-          className="btn btn-success csc"
-          onClick={() => {
-            setIsShowModal(true);
-          }}
-        >
-          Add new user
-        </button>
+        <div className="group-btns">
+          <label htmlFor="import" className="btn btn-warning">
+            <i className="fa-solid fa-file-import"></i>Import
+            <input type="file" id="import" hidden></input>
+          </label>
+          <CSVLink
+            filename={'my-file.csv'}
+            className="btn btn-primary export"
+            data={dataExport}
+            asyncOnClick={true} // thay vì mặc định sẽ export data nhưng asyncOnClick thì sẽ ko export data ngay mà get data bằng cách gọi hàm onClick thực hiện xong làm data đầu vào
+            onClick={getUsersExport}
+          >
+            <i className="fa-solid fa-download"></i>Export
+          </CSVLink>
+          <button
+            className="btn btn-success"
+            onClick={() => {
+              setIsShowModal(true);
+            }}
+          >
+            <i className="fa-solid fa-circle-plus"></i>Add new user
+          </button>
+        </div>
       </div>
       <div className="col-3 mb-3">
         <input
@@ -178,7 +213,7 @@ function DataTable() {
               </div>
             </th>
             <th>Last Name</th>
-            <th>Avata</th>
+            <th>Avatar</th>
             <th>Action</th>
           </tr>
         </thead>
