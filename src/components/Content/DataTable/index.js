@@ -5,7 +5,7 @@ import ReactPaginate from 'react-paginate';
 import ModalAddUser from '../ModalAddUser';
 import ModalEditUser from '../ModalEditUser';
 import ModalDelete from '../ModalDelete';
-import _ from 'lodash';
+import _, { debounce } from 'lodash';
 import './DataTable.scss';
 
 function DataTable() {
@@ -97,11 +97,18 @@ function DataTable() {
     setListUsers(cloneListUser);
   };
 
-  const handleSearch = (event) => {
-    setSearchUser(event.target.value);
-  };
+  const handleSearch = debounce((event) => {
+    let term = event.target.value;
+    console.log(term);
+    if (term) {
+      let cloneListUser = _.cloneDeep(listUsers);
+      let resultData = cloneListUser.filter((item) => item.email.includes(term));
+      setListUsers(resultData);
+    } else {
+      getUser(1);
+    }
+  }, 500);
 
-  console.log(searchUser);
   return (
     <Container>
       <div className="my-4 add-new">
@@ -120,11 +127,12 @@ function DataTable() {
       <div className="col-3 mb-3">
         <input
           className="form-control"
+          placeholder="Search user by Email ..."
           value={searchUser}
           onChange={(event) => {
+            setSearchUser(event.target.value);
             handleSearch(event);
           }}
-          placeholder="Search user by Email ..."
         />
       </div>
       <Table striped bordered hover>
@@ -176,7 +184,7 @@ function DataTable() {
         </thead>
         <tbody>
           {listUsers &&
-            listUsers.length > 1 &&
+            listUsers.length > 0 &&
             listUsers.map((data) => {
               return (
                 <tr key={`users-${data.id}`}>
