@@ -27,3 +27,84 @@ code {
 .add-new span {
   margin-right: 20px;
 }
+
+.f_address {
+  margin-top: 100px;
+  text-align: center;
+  padding: 5px 0;
+}
+
+.login_container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  .title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    padding-top: 30px;
+    margin-bottom: 30px;
+  }
+  .text {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .username,
+  .password {
+    width: 100%;
+  }
+  .username {
+    margin-bottom: 10px;
+  }
+  .password {
+    position: relative;
+    .icon {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+  input {
+    width: 100%;
+    padding: 10px 5px;
+    outline: none;
+    caret-color: #fe2c55;
+    border: 1px solid #ccc;
+    background: transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border: 1px solid #ccc;
+      background: #dedede;
+    }
+  }
+  button {
+    margin-top: 30px;
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    transition: all 0.3s ease;
+    .loading {
+      margin-right: 5px;
+    }
+    &:hover {
+      opacity: 0.7;
+    }
+    &.active {
+      background: #fe2c55;
+      color: #fff;
+    }
+    &[disabled='disabled'],
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  .back {
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+}

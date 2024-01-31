@@ -1,23 +1,43 @@
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import logo from '../../assets/images/logo.png';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 function Header() {
+  const navigate = useNavigate();
+  const handelLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+    toast.success('Log out success!');
+  };
   return (
     <Navbar bg="light" expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Navbar.Brand href="/" className="d-flex align-items-center">
+          <img src={logo} width={50} alt="Tuananh-App" />
+          <span className="logo_title">Tuananh-App</span>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+            <NavLink className="nav-link" to="/">
+              Home
+            </NavLink>
+            <NavLink className="nav-link" to="/users">
+              Manager users
+            </NavLink>
+          </Nav>
+          <Nav>
+            <NavDropdown title="Setting">
+              <NavLink className="nav-link" to="/login">
+                Login
+              </NavLink>
+              <span
+                style={{ padding: '0.5rem 0.5rem', cursor: 'pointer', display: 'block' }}
+                onClick={() => handelLogout()}
+              >
+                Logout
+              </span>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

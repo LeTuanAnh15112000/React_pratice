@@ -158,7 +158,7 @@ function DataTable() {
                     result.push(obj);
                   }
                 });
-                console.log(result);
+                setListUsers(result);
               }
             } else {
               toast.error('Wrong format csv file');
@@ -219,7 +219,7 @@ function DataTable() {
           }}
         />
       </div>
-      <Table striped bordered hover>
+      <Table responsive bordered hover>
         <thead>
           <tr>
             <th>
@@ -280,22 +280,24 @@ function DataTable() {
                     <img src={data.avatar} alt="Avatar" />
                   </td>
                   <td>
-                    <button
-                      className="btn btn-warning mx-3"
-                      onClick={() => {
-                        handleEditUser(data);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => {
-                        handleDeleteUser(data);
-                      }}
-                    >
-                      Delete
-                    </button>
+                    <div className="d-flex">
+                      <button
+                        className="btn btn-warning mx-1"
+                        onClick={() => {
+                          handleEditUser(data);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger mx-1"
+                        onClick={() => {
+                          handleDeleteUser(data);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
