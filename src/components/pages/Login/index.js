@@ -8,10 +8,11 @@ function Login() {
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [loadingApi, setLoadingApi] = useState(false);
-
+  const [isRequesting, setIsRequesting] = useState(false);
   useEffect(() => {
     let token = localStorage.getItem('token');
     if (token) {
+      // mình thấy nên ko cho click vào chớ ko nên quay về trang hôm hoặc cả 2
       navigate('/');
     }
   }, []);
@@ -21,6 +22,7 @@ function Login() {
       toast.error('Email/Password is required!');
       return;
     }
+    setIsRequesting(true);
     setLoadingApi(true);
     let res = await loginApi(email, password);
     if (res && res.token) {
@@ -30,6 +32,7 @@ function Login() {
       toast.error(res.data.error);
     }
     setLoadingApi(false);
+    setIsRequesting(false);
     setEmail('');
     setPassword('');
   };
@@ -64,7 +67,7 @@ function Login() {
       </div>
       <button
         disabled={email && password ? false : true}
-        className={email && password ? 'active' : ''}
+        className={(email && password ? 'active' : '') + ' ' + (isRequesting ? 'is_active' : '')}
         onClick={() => handleLogin()}
       >
         {loadingApi && <i class="loading fas fa-sync fa-spin"></i>}
